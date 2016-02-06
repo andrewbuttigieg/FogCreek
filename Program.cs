@@ -9,12 +9,11 @@ namespace Fogcreek
     public class Program
     {
         static bool ContainsPair(string haystack){
-            var masterCheck = new Dictionary<char, bool>();
+            //var masterCheck = new Dictionary<char, bool>();
+            int head = 0;
             foreach (var needle in haystack){
-                if (masterCheck.ContainsKey(needle))
+                if (haystack.IndexOf(needle, ++head) >= 0)
                     return true;
-                    else 
-                    masterCheck.Add(needle, true);
             }
             return false;
         }
@@ -63,8 +62,9 @@ namespace Fogcreek
         public static void Main(string[] args)
         {
             //var test = new StringBuilder("ttvmswxjzdgzqxotby_lslonwqaipchgqdo_yz_fqdagixyrobdjtnl_jqzpptzfcdcjjcpjjnnvopmh");
-            var test =toDecrypt;
-            //Console.WriteLine(test);
+            var test =toDecrypt.Replace("\n", "");
+            Console.WriteLine(test);
+            int i = 0;
             do{
                 var positionStartLongest = FindLongest(test.ToString());
                  //Console.WriteLine(positionStartLongest);
@@ -72,7 +72,7 @@ namespace Fogcreek
                     break;
                 else
                     test = MoveToBack(test, positionStartLongest);
-                //Console.WriteLine(test);
+                Console.WriteLine(i++);
             } while(true);
             Console.WriteLine(TrimAfterUnderscore(test.ToString()) + "---");
             
