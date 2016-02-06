@@ -8,14 +8,15 @@ namespace Fogcreek
 {
     public class Program
     {
-        static bool ContainsPair(string haystack){
+        static int ContainsPair(string haystack){
             //var masterCheck = new Dictionary<char, bool>();
             int head = 0;
             foreach (var needle in haystack){
-                if (haystack.IndexOf(needle, ++head) >= 0)
-                    return true;
+                var pos = haystack.IndexOf(needle, ++head);
+                if (pos >= 0)
+                    return pos;
             }
-            return false;
+            return -1;
         }
         
         static Tuple<int, int> FindLongest(string haystack){
@@ -29,11 +30,16 @@ namespace Fogcreek
                         if (haystack[head] == haystack[i]){
                             //see if this is the longest
                             if (i - head > longest){
-                                if (!ContainsPair(haystack.Substring(head + 1, (i - head) - 1)))
+                                var pos = ContainsPair(haystack.Substring(head + 1, (i - head) - 1));
+                                if (pos < 0)
                                 {
                                     longest = i - head;
                                     needle = head;
                                     tail = i;
+                                }
+                                else{
+                                    //head = pos + head;
+                                    break;
                                 }
                             }
                         }
@@ -63,7 +69,7 @@ namespace Fogcreek
         {
             //var test = new StringBuilder("ttvmswxjzdgzqxotby_lslonwqaipchgqdo_yz_fqdagixyrobdjtnl_jqzpptzfcdcjjcpjjnnvopmh");
             var test =toDecrypt.Replace("\n", "");
-            Console.WriteLine(test);
+            Console.WriteLine("Text to decode: " + test);
             int i = 0;
             do{
                 var positionStartLongest = FindLongest(test.ToString());
@@ -74,7 +80,7 @@ namespace Fogcreek
                     test = MoveToBack(test, positionStartLongest);
                 Console.WriteLine(i++);
             } while(true);
-            Console.WriteLine(TrimAfterUnderscore(test.ToString()) + "---");
+            Console.WriteLine("Final decoded text is: " + TrimAfterUnderscore(test.ToString()));
             
         }
         
