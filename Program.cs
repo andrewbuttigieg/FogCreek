@@ -26,6 +26,7 @@ namespace Fogcreek
             int longest = 0;
             do {
                 if (haystack.Length > head && haystack.IndexOf(haystack[head], head + 1) > -1){
+                    //optimisation, we know where to start the check
                     for(int i = haystack.IndexOf(haystack[head], head + 1); i < haystack.Length; i++){
                         if (haystack[head] == haystack[i]){
                             //see if this is the longest
@@ -33,12 +34,13 @@ namespace Fogcreek
                                 var pos = ContainsPair(haystack.Substring(head + 1, (i - head) - 1));
                                 if (pos < 0)
                                 {
+                                    //this is the longest pair we know of without a pair in it
                                     longest = i - head;
                                     needle = head;
                                     tail = i;
                                 }
                                 else{
-                                    //head = pos + head;
+                                    //we break here because we know that we have pairs in the substring so there is no way we have the longest pair here
                                     break;
                                 }
                             }
@@ -69,7 +71,7 @@ namespace Fogcreek
         {
             //var test = new StringBuilder("ttvmswxjzdgzqxotby_lslonwqaipchgqdo_yz_fqdagixyrobdjtnl_jqzpptzfcdcjjcpjjnnvopmh");
             var test =toDecrypt.Replace("\n", "");
-            Console.WriteLine("Text to decode: " + test);
+            //Console.WriteLine("Text to decode: " + test);
             int i = 0;
             do{
                 var positionStartLongest = FindLongest(test.ToString());
